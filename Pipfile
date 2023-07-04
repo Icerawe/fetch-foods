@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+streamlit = "==1.24.0"
+pandas = "==2.0.3"
+streamlit-image-select = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
