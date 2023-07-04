@@ -78,7 +78,7 @@ if len(name.strip())>0:
         if reset_order:
             name = ""
             st.session_state.orders = []
-            st.error(f"รายการอาหารของคุณ {name} ยกเลิกเรียบร้อยแล้ว")
+            st.error(f"รายการอาหารของคุณ {name} ยกเลิกเรียบร้อยแล้ว ติดต่อร้านค้าโทร: {st.phone}")
             df = pd.DataFrame(st.session_state.orders)
             df.index = range(1,len(df)+1)
             time.sleep(1)
