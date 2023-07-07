@@ -6,8 +6,8 @@ name = "pypi"
 [packages]
 streamlit = "==1.24.0"
 pandas = "==2.0.3"
-streamlit-image-select = "*"
 numpy = "==1.25.0"
+streamlit-image-select = "==0.6.0"
 
 [dev-packages]
 
