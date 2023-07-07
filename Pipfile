@@ -7,8 +7,9 @@ name = "pypi"
 streamlit = "==1.24.0"
 pandas = "==2.0.3"
 streamlit-image-select = "*"
+numpy = "==1.25.0"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "3.10"
