@@ -21,7 +21,7 @@ df_menu.index = range(1,len(df_menu)+1)
 df_menu.columns = ["รายการ", "ราคา(บาท)"]
 st.write(df_menu)
 
-img = image_select("ภาพประกอบ", ["image/ch.jpg", "image/ff.jpg", "image/yg.jpg"],)
+# img = image_select("ภาพประกอบ", ["image/ch.jpg", "image/ff.jpg", "image/yg.jpg"],)
 
 
 # User input
