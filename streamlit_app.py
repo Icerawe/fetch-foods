@@ -63,9 +63,7 @@ add_to_cart = st.button("✅  เพิ่มรายการ")
 # add_to_cart = st.button("เพิ่มรายการอาหาร")
 if add_to_cart and selected_item != "":
     total_price = menu[selected_item] * quantity
-    st.success(f"""
-               เพิ่ม {selected_item} {quantity} ชุด ราคา: {total_price:.2f} บาท 
-               **สั่งอาหารเพิ่มสามารถเลือกรายการใหม่ได้เลย""")
+    st.success(f"""* สั่งอาหารเพิ่มสามารถเลือกรายการใหม่ได้เลย""")
 
     st.session_state.orders.append({
         "รายการ": order_name,
