@@ -107,7 +107,20 @@ if len(st.session_state.orders) > 0:
         width, height = 1290, 2134
         image = image.resize((width, height))
         image_bytes = io.BytesIO()
-        image.save(image_bytes, format='JPEG')
+        image.save(image_bytes, format='PNG')
 
-        st.info("กรณีชำระเงินเรียบร้อยแล้ว โปรดรออาหารสักครู่ ขอบคุณครับ")
+        notify.send_message(
+            message=f"คุณ {0}\n {df}\n ยอดชำระ {price} บาท\n ติดต่อ {0}",
+            files={"imageFile": image_bytes.getvalue()},
+            token=st.secrets['token']
+        )
 
+        done = st.button("เสร็จสิ้น")
+        if done:
+            name = ""
+            st.session_state.orders = []
+            st.info(f"กรณีชำระเงินเรียบร้อยแล้ว โปรดรออาหารสักครู่ ขอบคุณครับ")
+            df = pd.DataFrame(st.session_state.orders)
+            df.index = range(1,len(df)+1)
+            time.sleep(1)
+            st.experimental_rerun()
