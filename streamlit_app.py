@@ -95,7 +95,7 @@ if len(st.session_state.orders) > 0:
         image.save(image_bytes, format='PNG')
 
         notify.send_message(
-            message=f"คุณ {0}\n {df}\n ยอดชำระ {price} บาท\n ติดต่อ {0}",
+            message=f"คุณ {name}\n {df}\n ยอดชำระ {price} บาท\n ติดต่อ {0}",
             files={"imageFile": image_bytes.getvalue()},
             token=st.secrets['token']
         )
