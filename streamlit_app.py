@@ -89,8 +89,8 @@ if len(st.session_state.orders) > 0:
     uploaded_file = st.file_uploader("กรุณาอับโหลด สลิปชำระเงินเพื่อยืนยันออเดอร์")
     if uploaded_file is not None:            
         image = Image.open(uploaded_file)
-        width, height = 1290, 2134
-        image = image.resize((width, height))
+        # width, height = 1290, 2134
+        # image = image.resize((width, height))
         image_bytes = io.BytesIO()
         image.save(image_bytes, format='PNG')
 
