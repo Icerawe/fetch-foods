@@ -95,7 +95,7 @@ if len(st.session_state.orders) > 0:
         image.save(image_bytes, format='PNG')
 
         notify.send_message(
-            message=f"คุณ {name}\n {df}\n ยอดชำระ {price} บาท\n ติดต่อ {0}",
+            message=f"คุณ {name}\n {df}\n ยอดชำระ {price} บาท\n ติดต่อ {phone}",
             files={"imageFile": image_bytes.getvalue()},
             token=st.secrets['token']
         )
@@ -104,7 +104,7 @@ if len(st.session_state.orders) > 0:
         if done:
             name = ""
             st.session_state.orders = []
-            st.info(f"กรณีชำระเงินเรียบร้อยแล้ว โปรดรออาหารสักครู่ ขอบคุณครับ")
+            st.info(f"ออเดอร์ถูกส่งเรียบร้อย กรุณารออาหารสักครู่นะครับ")
             df = pd.DataFrame(st.session_state.orders)
             df.index = range(1,len(df)+1)
             time.sleep(1)
