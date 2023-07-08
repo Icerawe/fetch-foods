@@ -5,6 +5,7 @@ from PIL import Image
 
 import notify
 import time
+import json
 from streamlit_image_select import image_select
 
 st.image('image/banner.jpeg')
@@ -14,23 +15,7 @@ st.text(f"""
     ติดต่อร้านค้า โทร. {st.secrets['phone']}""")
 
 st.markdown("###### เมนูอาหาร")
-menu = {
-    "เอ็นไก่ทอด": 69,
-    "เฟรนซ์ฟราย ": 59,
-    "กรีกโยเกิร์ต": 50
-}
-
-df = pd.DataFrame({
-    "รายการอาหาร": menu.keys(),
-    "ราคา": menu.values(),
-    "ภาพประกอบ": ['image/ch.jpg', 'image/ff.jpg', 'image/yg.jpg']
-})
-    
-# Convert the image paths to HTML with <img> tags
-df['ภาพประกอบ'] = df['ภาพประกอบ'].apply(lambda x: f'<img src="{x}">')
-df.index = range(1, len(df)+1)
-# Display the DataFrame with images in Streamlit
-# st.write(df.to_html(escape=False), unsafe_allow_html=True)
+menu = json.loads(st.secrets['menu'])
 st.write("\n")
 
 if 'selected_value' not in st.session_state:
