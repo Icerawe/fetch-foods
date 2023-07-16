@@ -57,17 +57,17 @@ if st.secrets['is_open']:
 
     if selected_item != 'เลือกเมนู':
         quantity = st.number_input("จำนวน", min_value=0, value=0)
-    if quantity>0:
-        add_to_cart = st.button("✅  เพิ่มรายการ")
-        if add_to_cart:
-            price = menu[selected_item] * quantity
-            st.success(f"""* สั่งอาหารเพิ่มสามารถเลือกรายการใหม่ได้เลย""")
+        if quantity>0:
+            add_to_cart = st.button("✅  เพิ่มรายการ")
+            if add_to_cart:
+                price = menu[selected_item] * quantity
+                st.success(f"""* สั่งอาหารเพิ่มสามารถเลือกรายการใหม่ได้เลย""")
 
-            st.session_state.orders.append({
-                "รายการ": order_name,
-                "จำนวน": quantity,
-                "ราคา": price
-            })
+                st.session_state.orders.append({
+                    "รายการ": order_name,
+                    "จำนวน": quantity,
+                    "ราคา": price
+                })
 
     if len(st.session_state.orders) > 0:
         st.markdown("###### รายการอาหารที่สั่ง")
