@@ -97,7 +97,7 @@ if st.secrets['is_open']:
         else:
             st.warning(f"กรุณากรอกชื่อ และ เบอร์โทร")
 
-        uploaded_file = st.file_uploader("อับโหลด")
+        uploaded_file = st.file_uploader("อับโหลดสลิปชำระเงิน")
 
         done = st.button("เสร็จสิ้น")
         if done and (uploaded_file is not None):
