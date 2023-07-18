@@ -57,9 +57,13 @@ if st.secrets['is_open']:
 
     if selected_item != 'เลือกเมนู':
         quantity = st.number_input("จำนวน", min_value=0, value=0)
-        if quantity>0:
-            add_to_cart = st.button("✅  เพิ่มรายการ")
-            if add_to_cart:
+        add_to_cart = st.button("✅  เพิ่มรายการ")
+        if add_to_cart:
+            if ("กรีกโยเกิร์ต + ท๊อปปิ้ง + ผลไม้"==selected_item) and len(topping)==0:
+                st.error(f"กรุณาเลือก ท๊อปปิ้ง/ผลไม้")
+            elif quantity==0:
+                st.error(f"กรุณาเลือก ใส่จำนวน")
+            else:
                 price = menu[selected_item] * quantity
                 st.success(f"""* สั่งอาหารเพิ่มสามารถเลือกรายการใหม่ได้เลย""")
 
@@ -69,11 +73,13 @@ if st.secrets['is_open']:
                     "ราคา": price
                 })
 
+
     if len(st.session_state.orders) > 0:
         st.markdown("###### รายการอาหารที่สั่ง")
         df = pd.DataFrame(st.session_state.orders)
         df.index = range(1,len(df)+1)
         st.dataframe(df)
+        remark = st.text_input(label="หมายเหตุ (ถ้ามี)")
         reset_order = st.button("❌ ยกเลิกรายการ")
         if reset_order:
             name = ""
@@ -85,12 +91,12 @@ if st.secrets['is_open']:
             st.experimental_rerun()
         total_price = df['ราคา'].sum()
         st.info(f"รายการอาหาร {len(df)} รายการ ทั้งหมด {total_price} บาทครับ")
-        remark = st.text_input(label="หมายเหตุ (ถ้ามี)")
+
 
         name = st.text_input("ชื่อลูกค้า :", )
         phone = st.text_input(label="เบอร์ติดต่อกลับ (กรณีทางร้านหาลูกค้าไม่เจอ)")
         qr_code = st.button("💰 ชำระเงิน")
-        qr_code = True
+        # qr_code = True
         if qr_code and len(name.strip())>0:
             st.image(f"image/prompt_pay.png",width=250)
             st.image(f"https://promptpay.io/{st.secrets['prompt_pay']}/{total_price}.png", width=250)
