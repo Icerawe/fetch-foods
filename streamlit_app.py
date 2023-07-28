@@ -82,7 +82,7 @@ if st.secrets['is_open']:
         df = pd.DataFrame(st.session_state.orders)
         df.index = range(1,len(df)+1)
         st.dataframe(df)
-        remark = st.text_input(label="หมายเหตุ/สถานที่ส่ง (ถ้ามี)")
+        remark = st.text_input(label="หมายเหตุ (ถ้ามี)")
         reset_order = st.button("❌ ยกเลิกรายการ")
         if reset_order:
             name = ""
