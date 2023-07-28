@@ -2,12 +2,15 @@ import streamlit as st
 import pandas as pd
 from PIL import Image 
 
+import requests
 import notify
 import time
-import json
 import io
 
 
+def download_image(url):
+    response = requests.get(url)
+    return response.content
 
 
 if 'selected_value' not in st.session_state:
@@ -36,7 +39,7 @@ if st.secrets['is_open']:
     topping = ""
     if "กรีกโยเกิร์ต + ท๊อปปิ้ง + ผลไม้"==selected_item:
         topping = st.multiselect(
-            label="เลือกท็อปปิ้งได้ 3 อย่าง",
+            label="เลือกผลไม้ได้ 3 อย่าง",
             options=st.secrets['topping'],
             max_selections=3,
         )
@@ -57,7 +60,7 @@ if st.secrets['is_open']:
 
     if selected_item != 'เลือกเมนู':
         quantity = st.number_input("จำนวน", min_value=0, value=0)
-        add_to_cart = st.button("✅  เพิ่มรายการ")
+        add_to_cart = st.button("🛒 ใส่ตะกร้า")
         if add_to_cart:
             if ("กรีกโยเกิร์ต + ท๊อปปิ้ง + ผลไม้"==selected_item) and len(topping)==0:
                 st.error(f"กรุณาเลือก ท๊อปปิ้ง/ผลไม้")
@@ -66,12 +69,12 @@ if st.secrets['is_open']:
             else:
                 price = menu[selected_item] * quantity
                 st.success(f"""* สั่งอาหารเพิ่มสามารถเลือกรายการใหม่ได้เลย""")
-
                 st.session_state.orders.append({
                     "รายการ": order_name,
                     "จำนวน": quantity,
                     "ราคา": price
                 })
+                # st.experimental_rerun()
 
 
     if len(st.session_state.orders) > 0:
@@ -93,19 +96,24 @@ if st.secrets['is_open']:
         st.info(f"รายการอาหาร {len(df)} รายการ ทั้งหมด {total_price} บาทครับ")
 
 
-        name = st.text_input("ชื่อลูกค้า :", )
-        phone = st.text_input(label="เบอร์ติดต่อกลับ (กรณีทางร้านหาลูกค้าไม่เจอ)")
+        name = st.text_input("ชื่อลูกค้า")
+        phone = st.text_input(label="เบอร์ติดต่อกลับ")
         qr_code = st.button("💰 ชำระเงิน")
-        # qr_code = True
+        
         if qr_code and len(name.strip())>0:
-            st.image(f"image/prompt_pay.png",width=250)
-            st.image(f"https://promptpay.io/{st.secrets['prompt_pay']}/{total_price}.png", width=250)
+            # st.image(f"image/prompt_pay.png",width=250)
+            st.text("กดค้างที่ QR-code เพื่อบันทึกรูปภาพ\nสำหรับสแกนเพื่อชำระเงิน")
+            image_url = f"https://promptpay.io/{st.secrets['prompt_pay']}/{total_price}.png"
+            st.image(image_url, width=250)
+            # image_bytes = download_image(image_url)
+            # st.download_button(label="บันทึก QR-Code", data=image_bytes, file_name="downloaded_image.png", mime="image/png")
         else:
-            st.warning(f"กรุณากรอกชื่อ และ เบอร์โทร")
-
+            st.warning(f"กรุณากรอกชื่อลูกค้า")
         uploaded_file = st.file_uploader("อับโหลดสลิปชำระเงิน")
-
-        done = st.button("เสร็จสิ้น")
+        done = st.button("✅ ยืนยันรายการ")
+        if uploaded_file is not None:
+            st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
+  
         if done and (uploaded_file is not None):
             st.info(f"ออเดอร์ถูกส่งเรียบร้อย กรุณารออาหารสักครู่นะครับ")
             image = Image.open(uploaded_file)
