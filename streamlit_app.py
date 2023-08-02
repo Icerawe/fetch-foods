@@ -110,10 +110,9 @@ if st.secrets['is_open']:
         else:
             st.warning(f"กรุณากรอกชื่อลูกค้า")
         uploaded_file = st.file_uploader("อับโหลดสลิปชำระเงิน")
-        done = st.button("✅ ยืนยันรายการ")
         if uploaded_file is not None:
             st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
-  
+        done = st.button("✅ ยืนยันรายการ")
         if done and (uploaded_file is not None):
             st.info(f"ออเดอร์ถูกส่งเรียบร้อย กรุณารออาหารสักครู่นะครับ")
             image = Image.open(uploaded_file)
