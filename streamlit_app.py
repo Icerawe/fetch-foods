@@ -23,7 +23,7 @@ if 'qr_code' not in st.session_state:
     st.session_state.qr_code = True
 
 
-st.image('image/banner.jpeg')
+st.image('image/banner.jpg')
 if st.secrets['is_open']:
     st.text(f"""
         ลูกค้าสามารถสั่ง และ ชำระเงินได้ผ่านเว็บไซต์
