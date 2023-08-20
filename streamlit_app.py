@@ -75,7 +75,7 @@ if st.secrets['is_open']:
                     "ราคา": price
                 })
                 # st.experimental_rerun()
-
+    
 
     if len(st.session_state.orders) > 0:
         st.markdown("###### รายการอาหารที่สั่ง")
