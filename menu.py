@@ -112,6 +112,8 @@ class Menu:
             if done and (uploaded_file is not None):
                 st.info(f"ออเดอร์ถูกส่งเรียบร้อย กรุณารออาหารสักครู่นะครับ")
                 image = Image.open(uploaded_file)
+                scale = int(image.size[1]*1280/image.size[0])
+                image = image.resize((1280, scale))
                 image_bytes = io.BytesIO()
                 image.save(image_bytes, format='PNG')
 
