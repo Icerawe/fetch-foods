@@ -57,15 +57,15 @@ class School:
         
 
     def conclude(self):
+        message = f"*{self.name}*\nส่ง`{self.order_date}`"
         if self.role=='นักเรียน':
             st.info(body=f"""
                 😄 คุณ {self.name} รับโยเกิร์ตได้ที่ > ร้านนมBeyond (ช่วงพักเบรค) <
                 โดยแจ้งชื่อกับพี่พนักงานได้เลยค่ะ 
             """)
-            message = f"{self.name} {self.order_date}"
         elif self.role=='คุณครู':
             st.info(body=f"""😄 คุณครู {self.name} รับโยเกิร์ตได้ที่ >{self.location}< """)
-            message = f"*{self.name}*\nส่ง{self.order_date}\n{self.location}"
+            message = f"{message}\n{self.location}"
 
         return message
 
