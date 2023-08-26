@@ -66,22 +66,22 @@ class School:
         elif self.role=='คุณครู':
             st.info(body=f"""😄 คุณครู {self.name} รับโยเกิร์ตได้ที่ >{self.location}< """)
             message = f"{message}\n{self.location}"
-
         return message
 
 def main(tab: str):
     name = st.text_input(label="ชื่อ", key=tab)
     phone_number = st.text_input(label="เบอร์โทร", key=tab)
-
-    school = School(name=name, phone_number=phone_number, key=tab)
-    school.select_role()
-    school.select_date()
-    _name = school.conclude()
     
-    menu = Menu(key=f"{tab}_school")
-    menu.show_menu()
-    menu.add_bucket()
-    menu.summary_order()
-    menu.reset_order()
-    if len(st.session_state.orders) > 0:
-        menu.payment(name=_name, phone_number=phone_number, method="full")  
+    if len(name)>0 and len(phone_number)==10:
+        school = School(name=name, phone_number=phone_number, key=tab)
+        school.select_role()
+        school.select_date()
+        _name = school.conclude()
+        
+        menu = Menu(key=f"{tab}_school")
+        menu.show_menu()
+        menu.add_bucket()
+        menu.summary_order()
+        menu.reset_order()
+        if len(st.session_state.orders) > 0:
+            menu.payment(name=_name, phone_number=phone_number, method="full")  

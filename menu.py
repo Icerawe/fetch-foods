@@ -100,8 +100,6 @@ class Menu:
                 message=f"{order_name}\n{order_contact}\n{order_price}\n{order_list}\n{order_remark}",
                 token=st.secrets['token']
             )
-        else:
-            st.warning(f"กรุณากรอกชื่อลูกค้า")
         
         if method=='full':
             uploaded_file = st.file_uploader("อับโหลดสลิปชำระเงิน", key=self.key+'upload')
@@ -110,7 +108,7 @@ class Menu:
 
             done = st.button("✅ ยืนยันรายการ", key=self.key+'done')
             if done and (uploaded_file is not None):
-                st.info(f"ออเดอร์ถูกส่งเรียบร้อย กรุณารออาหารสักครู่นะครับ")
+                st.info(f"ออเดอร์ถูกส่งเรียบร้อย กรุณารอรับสินค้า {name}")
                 image = Image.open(uploaded_file)
                 scale = int(image.size[1]*1280/image.size[0])
                 image = image.resize((1280, scale))
@@ -118,13 +116,12 @@ class Menu:
                 image.save(image_bytes, format='PNG')
 
                 notify.send_message(
-                    message=f"สลิปยืนยันของ คุณ {order}",
+                    message=f"สลิปยืนยันของ คุณ {name}",
                     files={"imageFile": image_bytes.getvalue()},
                     token=st.secrets['token']
                 )
                 
                 st.session_state.orders = []
-                st.error(f"ยกเลิกรายการอาหาร เรียบร้อยแล้ว")
                 time.sleep(1)
                 st.experimental_rerun()
             elif uploaded_file is None:
