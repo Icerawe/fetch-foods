@@ -58,7 +58,7 @@ def main(tab: str):
     menu = Menu(key=f"{tab}_delivery")
     menu.show_menu()
     menu.add_bucket()
-    status = menu.summary_order()
+    menu.summary_order()
     menu.reset_order()
-    if status:
+    if len(st.session_state.orders) > 0:
         menu.payment(name=name, phone_number=phone_number, method="full")  

@@ -45,8 +45,8 @@ class Menu:
         self.order = f"{self.selected_item} {topping} {self.sauce}"
     
     def add_bucket(self):
-        quantity = st.slider("จำนวน", min_value=0, max_value=5, value=1, key=self.key)
-        add_bucket = st.button("🛒 ใส่ตะกร้า", key=self.key)
+        quantity = st.slider("จำนวน", min_value=0, max_value=5, value=1, key=self.key+'quantity')
+        add_bucket = st.button("🛒 ใส่ตะกร้า", key=self.key+'bucket')
         if add_bucket:
             if ("กรีกโยเกิร์ต + ท๊อปปิ้ง + ผลไม้" in self.selected_item) and len(self.topping)==0:
                 st.error(f"กรุณาเลือก ท๊อปปิ้ง/ผลไม้")
@@ -62,7 +62,7 @@ class Menu:
                 st.success(f"""* สั่งอาหารเพิ่มสามารถเลือกรายการใหม่ได้เลยครับ""")
 
     def reset_order(self):
-        reset_order = st.button("❌ ยกเลิกรายการ")
+        reset_order = st.button("❌ ยกเลิกรายการ", key=self.key+'reset')
         if reset_order:
             st.session_state.orders = []
             st.error(f"ยกเลิกรายการอาหาร เรียบร้อยแล้ว")
@@ -73,28 +73,25 @@ class Menu:
         if len(st.session_state.orders) > 0:
             self.df = pd.DataFrame(st.session_state.orders)
             self.df.index = range(1,len(self.df)+1)
-            st.sidebar.subheader("🛒 ตะกร้าของฉัน")
-            st.sidebar.table(self.df)
-            self.remark = st.sidebar.text_input(label="หมายเหตุ (ถ้ามี)")
+            st.subheader("🛒 ตะกร้าของฉัน")
+            st.table(self.df)
+            self.remark = st.text_input(label="หมายเหตุ (ถ้ามี)", key=self.key+'remark')
 
             self.total_price = self.df['ราคา'].sum()
             st.info(f"รายการอาหาร {len(self.df)} รายการ ทั้งหมด {self.total_price} บาทครับ")
-            return True
-        else:
-            return False
 
     def payment(self, name:str, phone_number:str, method:str="full"):
         menu_message = ""
         for order, quantity in zip(self.df['รายการอาหารที่สั่ง'], self.df['จำนวน']):
             menu_message += f"{order}: \t[{quantity}]\n"
 
-        order_name = f"*คุณ {name}*"
+        order_name = f"คุณ {name}"
         order_contact = f"ติดต่อ: {phone_number}"
         order_price = f"ยอดชำระ:{self.total_price} บาท"
         order_list = f"รายการอาหาร \n```{menu_message}```"
         order_remark = f"หมายเหตุ: `{self.remark}`"
 
-        qr_code = st.button("💰 ชำระเงิน")
+        qr_code = st.button("💰 ชำระเงิน", key=self.key+'payment')
         if qr_code and len(name.strip())>0:
             st.text("กดค้างที่ QR-code เพื่อบันทึกรูปภาพ\nสำหรับสแกนเพื่อชำระเงิน")
             image_url = f"https://promptpay.io/{st.secrets['prompt_pay']}/{self.total_price}.png"
@@ -107,11 +104,11 @@ class Menu:
             st.warning(f"กรุณากรอกชื่อลูกค้า")
         
         if method=='full':
-            uploaded_file = st.file_uploader("อับโหลดสลิปชำระเงิน")
+            uploaded_file = st.file_uploader("อับโหลดสลิปชำระเงิน", key=self.key+'upload')
             if uploaded_file is not None:
                 st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
 
-            done = st.button("✅ ยืนยันรายการ")
+            done = st.button("✅ ยืนยันรายการ", key=self.key+'done')
             if done and (uploaded_file is not None):
                 st.info(f"ออเดอร์ถูกส่งเรียบร้อย กรุณารออาหารสักครู่นะครับ")
                 image = Image.open(uploaded_file)

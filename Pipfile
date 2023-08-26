@@ -4,13 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-streamlit = "==1.24.0"
-pandas = "==2.0.3"
-numpy = "==1.25.0"
-streamlit-image-select = "==0.6.0"
-streamlit-aggrid = "*"
+streamlit = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.10"
+python_version = "3.11"

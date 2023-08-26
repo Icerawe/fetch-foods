@@ -50,21 +50,22 @@ class School:
         ]
         month_th = _TH_FULL_MONTHS[nextDate.month-1]
         self.order_date = st.selectbox(
-            label="วันที่ จัดส่ง",
-            options=[f'วันอังคารที่ {nextDate.strftime(f"%d {month_th} %Y")}'],
+            label="วันที่จัดส่ง",
+            options=[f'วันอังคาร ที่ {nextDate.strftime(f"%d {month_th} %Y")}'],
             key=self.key
         )
         
 
     def conclude(self):
-        message = f"{self.order_date} {self.name} "
         if self.role=='นักเรียน':
             st.info(body=f"""
                 😄 คุณ {self.name} รับโยเกิร์ตได้ที่ > ร้านนมBeyond (ช่วงพักเบรค) <
                 โดยแจ้งชื่อกับพี่พนักงานได้เลยค่ะ 
             """)
+            message = f"{self.name} {self.order_date}"
         elif self.role=='คุณครู':
             st.info(body=f"""😄 คุณครู {self.name} รับโยเกิร์ตได้ที่ >{self.location}< """)
+            message = f"*{self.name}*\nส่ง{self.order_date}\n{self.location}"
 
         return message
 
@@ -80,7 +81,7 @@ def main(tab: str):
     menu = Menu(key=f"{tab}_school")
     menu.show_menu()
     menu.add_bucket()
-    status = menu.summary_order()
+    menu.summary_order()
     menu.reset_order()
-    if status:
+    if len(st.session_state.orders) > 0:
         menu.payment(name=_name, phone_number=phone_number, method="full")  
