@@ -131,7 +131,7 @@ class Menu:
                 })
                 _log.to_csv('log.csv', header=False, mode='a', index=False, encoding='utf-8-sig')
                 st.session_state.orders = []
-                time.sleep(1)
+                time.sleep(5)
                 st.experimental_rerun()
             elif uploaded_file is None:
                 st.warning("กรุณาอับโหลด สลิปชำระเงินเพื่อยืนยันออเดอร์")
