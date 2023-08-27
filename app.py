@@ -19,5 +19,5 @@ st.sidebar.subheader('ประวัติการสั่งซื้อ')
 show_log = pd.read_csv('log.csv')
 show_log['วันที่สั่ง'] = pd.to_datetime(show_log['วันที่สั่ง'])
 show_log = show_log.loc[show_log['วันที่สั่ง'].dt.date > (date.today() + timedelta(days=-7))]
-st.sidebar.dataframe(show_log.set_index('วันที่สั่ง').sort_index(ascending=False))
+st.sidebar.table(show_log.set_index('วันที่สั่ง').sort_index(ascending=False))
 show_log.to_csv('log.csv', index=False, encoding='utf-8-sig')
