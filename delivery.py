@@ -11,7 +11,7 @@ class Delivery:
     def select_location(self):
         self.location = st.text_input(
             label="ระบุสถานที่จัดส่ง", 
-            placeholder="กรณีมารับที่บ้าน พิมพ์ว่าบ้านครูอายได้เลย")
+            placeholder="ระบุสถานที่ใกล้เคียง หรือ ระบุชื่ออาคาร ชั้น ห้อง เพิ่มเติม")
         
 
     def select_date(self):
@@ -58,12 +58,18 @@ def main(tab: str):
         delivery = Delivery(name=name, phone_number=phone_number, key=tab)
         delivery.select_date()
         delivery.select_location()
-        _name = delivery.conclude()
 
-        menu = Menu(key=f"{tab}_delivery")
-        menu.show_menu()
-        menu.add_bucket()
-        menu.summary_order()
-        menu.reset_order()
-        if len(st.session_state.orders) > 0:
-            menu.payment(name=_name, phone_number=phone_number, method="full")  
+        if len(delivery.location) > 0:
+            _name = delivery.conclude()
+
+            menu = Menu(key=f"{tab}_delivery")
+            menu.show_menu()
+            menu.add_bucket()
+            menu.summary_order()
+            menu.reset_order()
+
+            if menu.total_price >= 100:
+                if len(st.session_state.orders) > 0:
+                    menu.payment(name=_name, phone_number=phone_number, method="full")
+            else:
+                st.error(f"บริการจัดสั่ง ขั้นต่ำ 100 บาทครับ")
