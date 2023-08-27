@@ -25,12 +25,15 @@ class Menu:
             )
             self.selected_item = selected_item.split(":")[0]
 
-        with col_sauce:
-            self.sauce = st.radio(
-                label="เลือกซอส",
-                options=st.secrets['sauce'],
-                key=self.key+"col_sauce"
-            )
+        if self.selected_item == 'กรีกโยเกิร์ตล้วนๆ (200g)':
+            self.sauce = ""
+        else:
+            with col_sauce:
+                self.sauce = st.radio(
+                    label="เลือกซอส",
+                    options=st.secrets['sauce'],
+                    key=self.key+"col_sauce"
+                )
 
         self.topping = []
         if "กรีกโยเกิร์ต + ท๊อปปิ้ง + ผลไม้" in self.selected_item:
