@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from PIL import Image 
 from typing import Literal
+from datetime import datetime
 
 import requests
 import notify
@@ -93,7 +94,6 @@ class Menu:
         order_price = f"ยอดชำระ:{self.total_price} บาท"
         order_list = f"รายการอาหาร \n```{menu_message}```"
         order_remark = f"หมายเหตุ: `{self.remark}`"
-
         qr_code = st.button("💰 ชำระเงิน", key=self.key+'payment')
         if qr_code and len(name.strip())>0:
             st.text("กดค้างที่ QR-code เพื่อบันทึกรูปภาพ\nสำหรับสแกนเพื่อชำระเงิน")
@@ -111,7 +111,7 @@ class Menu:
 
             done = st.button("✅ ยืนยันรายการ", key=self.key+'done')
             if done and (uploaded_file is not None):
-                st.info(f"ออเดอร์ถูกส่งเรียบร้อย กรุณารอรับสินค้า {name}")
+                st.info(f"ออเดอร์ของคุณ {name} สั่งเรียบร้อยแล้ว")
                 image = Image.open(uploaded_file)
                 scale = int(image.size[1]*1280/image.size[0])
                 image = image.resize((1280, scale))
@@ -123,9 +123,15 @@ class Menu:
                     files={"imageFile": image_bytes.getvalue()},
                     token=st.secrets['token']
                 )
-                
+                _log = pd.DataFrame({
+                    'วันที่สั่ง': [datetime.now()],
+                    'ผู้สั่ง' : [f"คุณ {name}".strip().replace("\n","")],
+                    'รายการอาหาร': [menu_message.strip().replace("\n","")],
+
+                })
+                _log.to_csv('log.csv', header=False, mode='a', index=False, encoding='utf-8-sig')
                 st.session_state.orders = []
-                time.sleep(5)
+                time.sleep(1)
                 st.experimental_rerun()
             elif uploaded_file is None:
                 st.warning("กรุณาอับโหลด สลิปชำระเงินเพื่อยืนยันออเดอร์")
