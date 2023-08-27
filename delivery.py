@@ -15,8 +15,6 @@ class Delivery:
         
 
     def select_date(self):
-        todayDate = date.today()
-        nextDate = todayDate + timedelta(days=-todayDate.weekday()-1, weeks=1)
         _TH_FULL_MONTHS = [
             "มกราคม",
             "กุมภาพันธ์",
@@ -31,13 +29,20 @@ class Delivery:
             "พฤศจิกายน",
             "ธันวาคม",
         ]
-        month_th = _TH_FULL_MONTHS[nextDate.month-1]
-        order_date = st.selectbox(
-            label="วันที่ จัดส่ง",
-            options=[f'วันอาทิตย์ ที่ {nextDate.strftime(f"%d {month_th} %Y")}'],
+        todayDate = date.today()
+        date_options = list()
+
+        for i in st.secrets['delivery_date']:
+            _date = todayDate + timedelta(days=-todayDate.weekday()+i, weeks=1)
+            str_date = st.secrets['order_date'][str(i)]
+            month_th = _TH_FULL_MONTHS[_date.month-1]
+            date_options.append(f"""{str_date} ที่ {_date.strftime(f'%d {month_th} %Y')}""")
+
+        self.order_date = st.selectbox(
+            label="วันที่จัดส่ง",
+            options=date_options,
             key=self.key
         )
-        self.order_date = order_date
         
 
     def conclude(self):

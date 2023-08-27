@@ -32,8 +32,6 @@ class School:
         
 
     def select_date(self):
-        todayDate = date.today()
-        nextDate = todayDate + timedelta(days=-todayDate.weekday()+1, weeks=1)
         _TH_FULL_MONTHS = [
             "มกราคม",
             "กุมภาพันธ์",
@@ -48,16 +46,24 @@ class School:
             "พฤศจิกายน",
             "ธันวาคม",
         ]
-        month_th = _TH_FULL_MONTHS[nextDate.month-1]
+        todayDate = date.today()
+        date_options = list()
+
+        for i in st.secrets['school_date']:
+            _date = todayDate + timedelta(days=-todayDate.weekday()+i, weeks=1)
+            str_date = st.secrets['order_date'][str(i)]
+            month_th = _TH_FULL_MONTHS[_date.month-1]
+            date_options.append(f"""{str_date} ที่ {_date.strftime(f'%d {month_th} %Y')}""")
+
         self.order_date = st.selectbox(
             label="วันที่จัดส่ง",
-            options=[f'วันอังคาร ที่ {nextDate.strftime(f"%d {month_th} %Y")}'],
+            options=date_options,
             key=self.key
         )
         
 
     def conclude(self):
-        message = f"*{self.name}*\nส่ง`{self.order_date}`"
+        message = f"*{self.name}*\nส่ง `{self.order_date}`"
         if self.role=='นักเรียน':
             st.info(body=f"""
                 😄 คุณ {self.name} รับโยเกิร์ตได้ที่ > ร้านนมBeyond (ช่วงพักเบรค) <
