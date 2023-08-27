@@ -67,9 +67,11 @@ def main(tab: str):
             menu.add_bucket()
             menu.summary_order()
             menu.reset_order()
-
-            if menu.total_price >= 100:
-                if len(st.session_state.orders) > 0:
-                    menu.payment(name=_name, phone_number=phone_number, method="full")
-            else:
-                st.error(f"บริการจัดสั่ง ขั้นต่ำ 100 บาทครับ")
+            try:
+                if menu.total_price >= 100:
+                    if len(st.session_state.orders) > 0:
+                        menu.payment(name=_name, phone_number=phone_number, method="full")
+                else:
+                    st.error(f"บริการจัดสั่ง ขั้นต่ำ 100 บาทครับ")
+            except:
+                pass
