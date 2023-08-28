@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from PIL import Image 
 from typing import Literal
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import requests
 import notify
@@ -124,7 +124,7 @@ class Menu:
                     token=st.secrets['token']
                 )
                 _log = pd.DataFrame({
-                    'วันที่สั่ง': [datetime.now()],
+                    'วันที่สั่ง': [datetime.now()+ timedelta(hours=7)],
                     'ผู้สั่ง' : [f"คุณ {name}".strip().replace("\n","")],
                     'รายการอาหาร': [menu_message.strip().replace("\n","")],
 
