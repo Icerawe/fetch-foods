@@ -26,7 +26,7 @@ class Menu:
             )
             self.selected_item = selected_item.split(":")[0]
 
-        if self.selected_item == 'กรีกโยเกิร์ตล้วนๆ (200g)':
+        if self.selected_item == 'กรีกโยเกิร์ตล้วนๆ (200g)' or self.selected_item == 'สตอร์เบอร์รี่โยเกิร์ต':
             self.sauce = ""
         else:
             with col_sauce:
@@ -84,7 +84,7 @@ class Menu:
             self.total_price = self.df['ราคา'].sum()
             st.info(f"รายการอาหาร {len(self.df)} รายการ ทั้งหมด {self.total_price} บาทครับ")
 
-    def payment(self, name:str, phone_number:str, method:str="full"):
+    def payment(self, name:str, phone_number:str=None, method:str="full"):
         menu_message = ""
         for order, quantity in zip(self.df['รายการอาหารที่สั่ง'], self.df['จำนวน']):
             menu_message += f"{order}: \t[{quantity}]\n"

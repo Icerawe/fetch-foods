@@ -1,20 +1,33 @@
 import streamlit as st
 import pandas as pd
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
 import school
 import delivery
+import market
 
 st.image('image/banner.jpg')
 st.text('เลือกวิธีการจัดส่ง ⤵️')
-tabs = st.tabs(["❤️‍🔥 มงฟอร์ตโรงเรียนที่เรา รัก!", "🚕 จัดส่งถึงที่ Delivery ทันใจ", "📄 ตรวจสอบคำสั่งซื้อ"])
-for tab in tabs:
+
+list_menu = [
+    "🚚 ตลาดนัด",
+    "❤️‍🔥 มงฟอร์ตโรงเรียนที่เรา รัก!", 
+    "🚕 จัดส่งถึงที่ Delivery ทันใจ", 
+    "📄 ตรวจสอบคำสั่งซื้อ"
+    ]
+if (datetime.now() + timedelta(days=-7)).weekday()!=5:
+    list_menu.pop(0)
+
+tabs = st.tabs(list_menu)
+for tab, menu in zip(tabs, list_menu):
     with tab:
-        if tab==tabs[0]:
+        if menu=="🚚 ตลาดนัด":
+            market.main(tab=tab)
+        elif menu=="❤️‍🔥 มงฟอร์ตโรงเรียนที่เรา รัก!":
             school.main(tab=tab)
-        elif tab==tabs[1]:
+        elif menu=="🚕 จัดส่งถึงที่ Delivery ทันใจ":
             delivery.main(tab=tab)
-        elif tab==tabs[2]:
+        elif menu=="📄 ตรวจสอบคำสั่งซื้อ":
             st.subheader('ประวัติการสั่งซื้อ')
             show_log = pd.read_csv('log.csv')
             show_log['วันที่สั่ง'] = pd.to_datetime(show_log['วันที่สั่ง'])
