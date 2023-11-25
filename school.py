@@ -55,7 +55,8 @@ class School:
                 _date = todayDate + timedelta(days=-todayDate.weekday()+i)
             str_date = st.secrets['order_date'][str(i)]
             month_th = _TH_FULL_MONTHS[_date.month-1]
-            date_options.append(f"""{str_date} ที่ {_date.strftime(f'%d {month_th} %Y')}""")
+            if (_date-todayDate).days > 1:
+                date_options.append(f"""{str_date} ที่ {_date.strftime(f'%d {month_th} %Y')}""")
 
         self.order_date = st.selectbox(
             label="วันที่จัดส่ง",
