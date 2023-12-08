@@ -26,7 +26,8 @@ class Menu:
             )
             self.selected_item = selected_item.split(":")[0]
 
-        if self.selected_item == 'กรีกโยเกิร์ตล้วนๆ (200g)' or self.selected_item == 'สตอร์เบอร์รี่โยเกิร์ต':
+        # ไม่ต้องเลือกซอสำหรับล้วนๆ
+        if 'ล้วนๆ' in self.selected_item:
             self.sauce = ""
         else:
             with col_sauce:
